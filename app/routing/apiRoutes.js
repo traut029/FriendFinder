@@ -16,17 +16,15 @@ module.exports = function (app) {
     app.post("/api/friends", function (req, res) {
 
         var newFriend = req.body
-        //turn strings in scores back to integers after passing through $.post
-        for (var i = 0; i < newFriend.scores.length; i++) {
-
-            newFriend.scores[i] = parseInt(newFriend.scores[i])
-        }
+        
         //Compare scores of newFriend to all in friends list and populate the difference score in the array differenceArr
         var differenceArr=[];
         for (var t = 0; t < friends.length; t++) {
             var totalDifference=0;
 
             for (var i = 0; i < newFriend.scores.length; i++) {
+                //Set newFriend to parseInt
+                newFriend.scores[i] = parseInt(newFriend.scores[i])
                 var difference = Math.abs(friends[t].scores[i] - newFriend.scores[i])
                 totalDifference =totalDifference+difference
             }
@@ -50,7 +48,8 @@ module.exports = function (app) {
         //add new data to friends data
         friends.push(newFriend)
         //give json of new friend
-        res.json(newFriend)
+        
+        res.json(bestMatch)
     });
    
     app.get("/api/best", function (req, res) {
@@ -58,3 +57,4 @@ module.exports = function (app) {
         res.json(bestMatch);
     });
 }
+ 
